@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Validation check</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        section{
+            width: 100%;
+            max-width: 350px;
+            margin:  40px auto;
+            padding: 40px;
+            box-shadow: 10px 10px 10px rgba(0,0,0,0.1), -10px -10px 10px rgba(0,0,0,0.1);
+        }
+        h2{
+            font-size: 30px;
+            font-weight: normal;
+            line-height: 36px;
+        }
+        .input-pass{
+            width: 100%;
+            position: relative;
+            
+        }
+
+        input{
+            width: 300px;
+            padding: 15px 20px;
+            border: 1px solid #ddd;
+            outline: none;
+            border-radius: 6px;
+            /* padding-left: 10px; */
+        }
+        .show-hide{
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            color: #aaa;
+        }
+        i{
+            cursor: pointer;
+        }
+        /* #show-icon{
+            display: none;
+        } */
+        p{
+            font-size: 20px;
+        }
+        ul{
+            padding: 0;
+            margin: 0;
+        }
+        li{
+            list-style: none;
+            padding: 5px 0;
+        }
+        span,i{
+            color: #aaa;
+        }
+        .valid i{
+            color: green;
+        }
+        .valid span{
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<section>
+    <h2>Password Validation Check</h2>
+
+    <div class="input-pass">
+        <input type="password" id="input-value" placeholder="Create password">
+        <div class="show-hide">
+            <i class="fa-solid fa-eye" id="show-icon"></i>
+            <!-- <i class="fa-solid fa-eye-slash" id="close-icon" onclick="Toggle()"></i> -->
+        </div>
+    </div>
+
+    <div class="validation-condition">
+        <p>Password should be</p>
+        <ul class="requirement">
+            <li><i class="fa-regular fa-circle"></i> <span>At least 8 characters length </span></li>
+            <li><i class="fa-regular fa-circle"></i> <span>At least 1 number(0...9) </span></li>
+            <li><i class="fa-regular fa-circle"></i> <span>At least 1 lowercase letter(a...z) </span></li>
+            <li><i class="fa-regular fa-circle"></i> <span>At least 1 special symbol (!...$) </span></li>
+            <li><i class="fa-regular fa-circle"></i> <span>At least 1 uppercase letter(A...Z) </span></li>
+        </ul>
+
+    </div>
+    
+</section>
+
+<script>
+        let showIcon = document.getElementById("show-icon");
+        // let hideIcon = document.getElementById("close-icon");
+        inputValue = document.getElementById("input-value");
+        const requirementList =  document.querySelectorAll('.requirement li')
+
+
+
+        showIcon.addEventListener('click', ()=>{
+        // toggle the password field
+        inputValue.type = inputValue.type === 'password' ? 'text' : 'password';
+
+        // toggle the show hide icon button
+        showIcon.className = `fa-solid fa-eye${inputValue.type === 'password' ? '':'-slash'}`;
+    })
+
+
+
+    // an array of password requirements with corresponding regular expression and index of the requirement list them.
+    const requirements = [
+        {regex: /.{8,}/, index:0}, // minimum 8 characters
+        {regex: /[0-9]/, index:1}, //At least 1 number
+        {regex: /[a-z]/, index:2}, // At least 1 lowercase letter
+        {regex: /[^A-Za-z0-9]/, index:3}, // At least 1 space character
+        {regex: /[A-Z]/, index:4}, // At least 1 uppercase letter
+    ]
+
+    inputValue.addEventListener('keyup', (e) => {
+        requirements.forEach(item =>{
+            // Check if the password matches the requirement regex
+            const isValid = item.regex.test(e.target.value);
+            const requirementItem = requirementList[item.index]
+
+            // Updating class and icon if requirement item matches requirement
+            if(isValid) {
+                requirementItem.firstElementChild.className = 'fa-regular fa-circle-check'
+                requirementItem.classList.add('valid')
+            }else{
+                requirementItem.firstElementChild.className = 'fa-regular fa-circle-xmark'
+                requirementItem.classList.remove('valid')
+            }
+        })
+    })
+
+
+
+
+
+
+
+
+
+
+    // function Toggle() {
+    //     if (hideIcon.style.display === 'block' ){
+    //         showIcon.style.display = 'block';
+    //         hideIcon.style.display = 'none';
+    //         inputValue.type = 'text';
+    //     }else{
+    //         showIcon.style.display = 'none';
+    //         hideIcon.style.display = 'block';
+    //         inputValue.type = 'password';
+    //     }
+    // }
+
+</script>
+</body>
+</html>
